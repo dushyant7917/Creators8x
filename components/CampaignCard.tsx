@@ -1,4 +1,10 @@
 import { Colors } from "@/constants/Colors";
+import {
+  cardShadowStyle,
+  formatDate,
+  getBrandImage,
+  getDaysUntilDeadline,
+} from "@/lib/utils";
 import { Campaign } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
@@ -10,41 +16,9 @@ interface CampaignCardProps {
 }
 
 export function CampaignCard({ campaign, onPress }: CampaignCardProps) {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    });
-  };
-
-  const daysUntilDeadline = () => {
-    const today = new Date();
-    const deadline = new Date(campaign.deadline);
-    const diffTime = deadline.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  };
-
-  const daysLeft = daysUntilDeadline();
+  const daysLeft = getDaysUntilDeadline(campaign.deadline);
   const isUrgent = daysLeft < 7 && daysLeft > 0;
   const isExpired = daysLeft <= 0;
-
-  // Map brand name to local image file
-  const getBrandImage = (brandName: string) => {
-    const brandKey = brandName.toLowerCase().replace(/[^a-z0-9]/g, "");
-    const brandImages: Record<string, any> = {
-      nike: require("@/assets/images/brands/nike.webp"),
-      sephora: require("@/assets/images/brands/sephora.webp"),
-      gymshark: require("@/assets/images/brands/gymshark.webp"),
-      starbucks: require("@/assets/images/brands/starbucks.webp"),
-      apple: require("@/assets/images/brands/apple.webp"),
-      adidas: require("@/assets/images/brands/adidas.webp"),
-      loreal: require("@/assets/images/brands/loreal.webp"),
-      cocacola: require("@/assets/images/brands/coca-cola.webp"),
-    };
-    return brandImages[brandKey] || { uri: campaign.brandImage };
-  };
 
   const getStatusColor = () => {
     if (isExpired) return Colors.status.rejected;
@@ -58,11 +32,7 @@ export function CampaignCard({ campaign, onPress }: CampaignCardProps) {
       className="mx-4 mb-4 rounded-2xl overflow-hidden"
       style={{
         backgroundColor: Colors.white,
-        shadowColor: Colors.darkBlue,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-        elevation: 4,
+        ...cardShadowStyle,
       }}
     >
       {/* Top Section with Brand and Payout */}

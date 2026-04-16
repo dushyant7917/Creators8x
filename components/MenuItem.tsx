@@ -1,4 +1,5 @@
 import { Colors } from "@/constants/Colors";
+import { cardShadowStyle } from "@/lib/utils";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
 
@@ -39,11 +40,7 @@ export function MenuItem({
       className="flex-row items-center justify-between mx-4 mb-3 p-4 rounded-xl"
       style={{
         backgroundColor: Colors.white,
-        shadowColor: Colors.darkBlue,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-        elevation: 4,
+        ...cardShadowStyle,
       }}
     >
       <View className="flex-row items-center">

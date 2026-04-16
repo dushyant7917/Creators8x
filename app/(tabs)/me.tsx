@@ -1,6 +1,7 @@
 import { Logo } from "@/components/Logo";
 import { SubmissionItem } from "@/components/SubmissionItem";
 import { Colors } from "@/constants/Colors";
+import { cardShadowStyle, getBrandImage } from "@/lib/utils";
 import { useCreatorStore } from "@/stores/creatorStore";
 import { Campaign, Submission } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
@@ -176,11 +177,7 @@ export default function MeScreen() {
             className="p-4 rounded-xl"
             style={{
               backgroundColor: Colors.white,
-              shadowColor: Colors.darkBlue,
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.1,
-              shadowRadius: 8,
-              elevation: 4,
+              ...cardShadowStyle,
             }}
           >
             <View className="flex-row items-center">
@@ -213,11 +210,7 @@ export default function MeScreen() {
             className="p-4 rounded-xl"
             style={{
               backgroundColor: Colors.white,
-              shadowColor: Colors.darkBlue,
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.1,
-              shadowRadius: 8,
-              elevation: 4,
+              ...cardShadowStyle,
             }}
           >
             <View className="flex-row items-center">
@@ -246,11 +239,7 @@ export default function MeScreen() {
             className="p-4 rounded-xl"
             style={{
               backgroundColor: Colors.white,
-              shadowColor: Colors.darkBlue,
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.1,
-              shadowRadius: 8,
-              elevation: 4,
+              ...cardShadowStyle,
             }}
           >
             <View className="flex-row items-center">
@@ -285,11 +274,7 @@ export default function MeScreen() {
         className="p-5 rounded-2xl mb-8"
         style={{
           backgroundColor: Colors.white,
-          shadowColor: Colors.darkBlue,
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 8,
-          elevation: 4,
+          ...cardShadowStyle,
         }}
       >
         {/* Chart Header */}
@@ -372,22 +357,6 @@ export default function MeScreen() {
     </ScrollView>
   );
 
-  // Map brand name to local image file (same as CampaignCard)
-  const getBrandImage = (brandName: string, brandImage: string) => {
-    const brandKey = brandName.toLowerCase().replace(/[^a-z0-9]/g, "");
-    const brandImages: Record<string, any> = {
-      nike: require("@/assets/images/brands/nike.webp"),
-      sephora: require("@/assets/images/brands/sephora.webp"),
-      gymshark: require("@/assets/images/brands/gymshark.webp"),
-      starbucks: require("@/assets/images/brands/starbucks.webp"),
-      apple: require("@/assets/images/brands/apple.webp"),
-      adidas: require("@/assets/images/brands/adidas.webp"),
-      loreal: require("@/assets/images/brands/loreal.webp"),
-      cocacola: require("@/assets/images/brands/coca-cola.webp"),
-    };
-    return brandImages[brandKey] || { uri: brandImage };
-  };
-
   const renderCampaignsTab = () => (
     <FlatList
       data={campaignsWithSubmissions}
@@ -400,11 +369,7 @@ export default function MeScreen() {
           className="mx-4 mb-3 p-4 rounded-xl"
           style={{
             backgroundColor: Colors.white,
-            shadowColor: Colors.darkBlue,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 8,
-            elevation: 4,
+            ...cardShadowStyle,
           }}
         >
           <View className="flex-row items-center">
@@ -505,11 +470,7 @@ export default function MeScreen() {
           className="mx-4 mt-4 mb-2 p-4 rounded-xl"
           style={{
             backgroundColor: Colors.white,
-            shadowColor: Colors.darkBlue,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 8,
-            elevation: 4,
+            ...cardShadowStyle,
           }}
         >
           <View className="flex-row items-center">

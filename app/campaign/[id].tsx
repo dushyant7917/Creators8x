@@ -1,5 +1,11 @@
 import { SubmissionItem } from "@/components/SubmissionItem";
 import { Colors } from "@/constants/Colors";
+import {
+  cardShadowStyle,
+  formatDate,
+  getBrandImage,
+  getDaysUntilDeadline,
+} from "@/lib/utils";
 import { useCreatorStore } from "@/stores/creatorStore";
 import { Submission } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
@@ -76,32 +82,7 @@ export default function CampaignDetailScreen() {
     );
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
-
-  const daysUntilDeadline = () => {
-    const today = new Date();
-    const deadline = new Date(campaign.deadline);
-    const diffTime = deadline.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  };
-
-  const daysLeft = daysUntilDeadline();
-
-  const cardShadowStyle = {
-    shadowColor: Colors.darkBlue,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-  };
+  const daysLeft = getDaysUntilDeadline(campaign.deadline);
 
   const handlePlayVideo = () => {
     setVideoModalVisible(true);
@@ -151,22 +132,6 @@ export default function CampaignDetailScreen() {
     }
   };
 
-  // Map brand name to local image file
-  const getBrandImage = (brandName: string) => {
-    const brandKey = brandName.toLowerCase().replace(/[^a-z0-9]/g, "");
-    const brandImages: Record<string, any> = {
-      nike: require("@/assets/images/brands/nike.webp"),
-      sephora: require("@/assets/images/brands/sephora.webp"),
-      gymshark: require("@/assets/images/brands/gymshark.webp"),
-      starbucks: require("@/assets/images/brands/starbucks.webp"),
-      apple: require("@/assets/images/brands/apple.webp"),
-      adidas: require("@/assets/images/brands/adidas.webp"),
-      loreal: require("@/assets/images/brands/loreal.webp"),
-      cocacola: require("@/assets/images/brands/coca-cola.webp"),
-    };
-    return brandImages[brandKey] || { uri: campaign.brandImage };
-  };
-
   const isSubmitDisabled = !videoUrl.trim();
 
   return (
@@ -209,7 +174,10 @@ export default function CampaignDetailScreen() {
                 style={{ backgroundColor: `${Colors.lightBlue}15` }}
               >
                 <Image
-                  source={getBrandImage(campaign.brandName)}
+                  source={getBrandImage(
+                    campaign.brandName,
+                    campaign.brandImage,
+                  )}
                   style={{ width: 64, height: 64 }}
                   contentFit="cover"
                 />

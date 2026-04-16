@@ -1,4 +1,10 @@
 import { Colors } from "@/constants/Colors";
+import {
+  cardShadowStyle,
+  formatDateTime,
+  getStatusColor,
+  getStatusIcon,
+} from "@/lib/utils";
 import { useCreatorStore } from "@/stores/creatorStore";
 import { Submission } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,48 +20,12 @@ export function SubmissionItem({ submission, onEdit }: SubmissionItemProps) {
     state.campaigns.find((c) => c.id === submission.campaignId),
   );
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
-  const getStatusColor = () => {
-    switch (submission.status) {
-      case "approved":
-        return Colors.status.approved;
-      case "rejected":
-        return Colors.status.rejected;
-      default:
-        return Colors.status.pending;
-    }
-  };
-
-  const getStatusIcon = () => {
-    switch (submission.status) {
-      case "approved":
-        return "checkmark-circle";
-      case "rejected":
-        return "close-circle";
-      default:
-        return "time";
-    }
-  };
-
   return (
     <View
       className="mx-4 mb-3 p-4 rounded-xl"
       style={{
         backgroundColor: Colors.white,
-        shadowColor: Colors.darkBlue,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-        elevation: 4,
+        ...cardShadowStyle,
       }}
     >
       <View className="flex-row items-center justify-between">
@@ -71,16 +41,18 @@ export function SubmissionItem({ submission, onEdit }: SubmissionItemProps) {
           <View className="flex-row items-center">
             <View
               className="flex-row items-center px-2 py-0.5 rounded-full mr-2"
-              style={{ backgroundColor: `${getStatusColor()}15` }}
+              style={{
+                backgroundColor: `${getStatusColor(submission.status)}15`,
+              }}
             >
               <Ionicons
-                name={getStatusIcon()}
+                name={getStatusIcon(submission.status)}
                 size={12}
-                color={getStatusColor()}
+                color={getStatusColor(submission.status)}
               />
               <Text
                 className="text-xs font-semibold ml-1 capitalize"
-                style={{ color: getStatusColor() }}
+                style={{ color: getStatusColor(submission.status) }}
               >
                 {submission.status}
               </Text>
@@ -101,7 +73,7 @@ export function SubmissionItem({ submission, onEdit }: SubmissionItemProps) {
               {submission.platform}
             </Text>
             <Text className="text-xs" style={{ color: Colors.gray[400] }}>
-              {formatDate(submission.submittedAt)}
+              {formatDateTime(submission.submittedAt)}
             </Text>
           </View>
         </View>
